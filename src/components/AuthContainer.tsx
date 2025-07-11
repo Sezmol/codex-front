@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 import { ROUTES } from "@/constants/routerPaths";
 
 interface AuthContainerProps {
   children: ReactNode;
   title: string;
-  description: string;
+  description?: string;
   type: "login" | "register";
 }
 
@@ -27,7 +27,11 @@ export const AuthContainer = ({
           {title}
         </h4>
 
-        <p className="text-sm text-muted-foreground mt-2 mb-6">{description}</p>
+        {description && (
+          <p className="text-sm text-muted-foreground mt-2 mb-6">
+            {description}
+          </p>
+        )}
 
         {children}
 

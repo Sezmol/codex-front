@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
 import { queryClient } from "@/api";
@@ -7,7 +7,6 @@ import { CURRENT_USER_QUERY_KEY } from "@/api/queryKeys";
 import { AuthContainer } from "@/components/AuthContainer";
 import { ROLES_OPTIONS } from "@/constants";
 import { ROUTES } from "@/constants/routerPaths";
-import { useUserContext } from "@/contexts/UserContext";
 import { useFormCreation } from "@/hooks/useFormCreation";
 import { Role } from "@/types/enums";
 import { BaseSelect } from "@/ui/BaseSelect";
@@ -28,10 +27,22 @@ const DEFAULT_VALUES: RegistrationSchema = {
   role: Role.FRONT_DEV,
 };
 
+const fields: {
+  name: keyof RegistrationSchema;
+  label: string;
+  type?: string;
+  placeholder?: string;
+}[] = [
+  { name: "firstName", label: "First Name", placeholder: "John" },
+  { name: "lastName", label: "Last Name", placeholder: "Doe" },
+  { name: "nickname", label: "Nickname", placeholder: "johnDoe123" },
+  { name: "email", label: "Email", placeholder: "email@example.com" },
+  { name: "password", label: "Password", type: "password" },
+  { name: "confirmPassword", label: "Confirm Password", type: "password" },
+];
+
 export const Register = () => {
   const navigate = useNavigate();
-
-  const { setIsAuth } = useUserContext();
 
   const [{ setError, handleSubmit }, { Form, FormItem }] = useFormCreation({
     schema: registrationSchema,
@@ -53,8 +64,7 @@ export const Register = () => {
       queryClient.invalidateQueries({
         queryKey: [CURRENT_USER_QUERY_KEY],
       });
-      navigate(ROUTES.HOME, { replace: true });
-      setIsAuth(true);
+      navigate({ to: ROUTES.HOME, replace: true });
     },
   });
 
@@ -70,35 +80,19 @@ export const Register = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full flex flex-col gap-3"
       >
-        <FormItem name="firstName" label="First Name">
-          {(field) => <Input placeholder="John" {...field} />}
-        </FormItem>
-
-        <FormItem name="lastName" label="Last Name">
-          {(field) => <Input placeholder="Doe" {...field} />}
-        </FormItem>
-
-        <FormItem name="nickname" label="Nickname">
-          {(field) => <Input placeholder="johnDoe123" {...field} />}
-        </FormItem>
-
-        <FormItem name="email" label="Email">
-          {(field) => <Input placeholder="email@example.com" {...field} />}
-        </FormItem>
-
-        <FormItem name="password" label="Password">
-          {(field) => <Input type="password" {...field} />}
-        </FormItem>
-
-        <FormItem name="confirmPassword" label="Confirm Password">
-          {(field) => <Input type="password" {...field} />}
-        </FormItem>
+        {fields.map(({ name, label, placeholder, type }) => (
+          <FormItem key={name} name={name} label={label}>
+            {(field) => (
+              <Input {...field} placeholder={placeholder} type={type} />
+            )}
+          </FormItem>
+        ))}
 
         <FormItem name="role" label="Role">
           {(field) => <BaseSelect options={ROLES_OPTIONS} {...field} />}
         </FormItem>
 
-        <Button type="submit" className="mt-2" disabled={isPending}>
+        <Button type="submit" className="mt-2" loading={isPending}>
           Submit
         </Button>
       </Form>

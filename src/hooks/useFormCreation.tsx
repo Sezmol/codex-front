@@ -1,12 +1,13 @@
-import { ComponentProps, PropsWithChildren, useCallback } from "react";
+import { ComponentProps, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  FieldPath,
   FieldValues,
   useForm,
   UseFormProps,
   UseFormReturn,
 } from "react-hook-form";
-import { ZodSchema } from "zod";
+import { ZodSchema, ZodTypeAny } from "zod";
 
 import { Form as FormComponent } from "@/ui/form";
 import { FormElement, FormElementProps } from "@/ui/FormElement";
@@ -21,12 +22,12 @@ interface FormCreation<Fields extends FieldValues>
   schema: ZodSchema<Fields>;
 }
 
-type FormItemProps<Fields extends FieldValues> = Omit<
-  FormElementProps<Fields>,
-  "control"
->;
+type FormItemProps<
+  Fields extends FieldValues,
+  Name extends FieldPath<Fields> = FieldPath<Fields>,
+> = Omit<FormElementProps<Fields, Name>, "control">;
 
-type FormProps = ComponentProps<"form"> & PropsWithChildren;
+type FormProps = ComponentProps<"form">;
 
 export const useFormCreation = <Fields extends FieldValues>({
   schema,
@@ -35,26 +36,22 @@ export const useFormCreation = <Fields extends FieldValues>({
   UseFormReturn<Fields>,
   { Form: typeof Form; FormItem: typeof FormItem },
 ] => {
-  const form = useForm({
+  const form = useForm<Fields>({
     ...restUseFormProps,
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema as ZodTypeAny),
   });
 
-  const FormItem = useCallback(
-    (props: FormItemProps<Fields>) => {
-      return <FormElement {...props} control={form.control} />;
-    },
-    [form.control],
-  );
+  const FormItem = <Name extends FieldPath<Fields> = FieldPath<Fields>>(
+    props: FormItemProps<Fields, Name>,
+  ) => <FormElement {...props} control={form.control} />;
 
-  const Form = useCallback(
-    ({ children, ...formProps }: FormProps) => {
-      return (
+  const Form = useMemo(
+    () =>
+      ({ children, ...formProps }: FormProps) => (
         <FormComponent {...form}>
           <form {...formProps}>{children}</form>
         </FormComponent>
-      );
-    },
+      ),
     [form],
   );
 

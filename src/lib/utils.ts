@@ -1,6 +1,12 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-export function cn(...inputs: ClassValue[]) {
+import { ObjectEntries } from "@/types";
+
+export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
-}
+};
+
+export const typedEntries = <T extends object>(obj: T) => {
+  return Object.entries(obj) as ObjectEntries<T>;
+};

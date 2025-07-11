@@ -4,4 +4,6 @@ export const ENDPOINTS = {
   REFRESH: "/refresh",
   LOGOUT: "/logout",
   AUTH: "/auth",
-};
+  POSTS: "/posts",
+  USERS: "/users",
+} as const;

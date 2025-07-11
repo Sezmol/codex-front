@@ -21,7 +21,6 @@ export interface BaseSelectProps
   extends Omit<ComponentProps<"button">, "onChange"> {
   options: SelectOption[];
   placeholder?: string;
-  className?: string;
   value?: OptionValue;
   onChange?(value: OptionValue): void;
 }
@@ -38,13 +37,20 @@ function BaseSelectInner(
   ref: ForwardedRef<HTMLButtonElement>,
 ) {
   return (
-    <Select onValueChange={onChange} defaultValue={`${value}`}>
-      <SelectTrigger ref={ref} className={cn("w-full", className)} {...props}>
+    <Select
+      onValueChange={onChange}
+      defaultValue={value !== null ? `${value}` : undefined}
+    >
+      <SelectTrigger
+        ref={ref}
+        className={cn("w-full cursor-pointer", className)}
+        {...props}
+      >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
         {options.map(({ label, value }) => (
-          <SelectItem key={value} value={`${value}`}>
+          <SelectItem key={value} value={`${value}`} className="cursor-pointer">
             {label}
           </SelectItem>
         ))}

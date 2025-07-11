@@ -1,27 +1,24 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createRouter } from "@tanstack/react-router";
+import { LucideIcon } from "lucide-react";
 
-import { ROUTES } from "./constants/routerPaths";
-import { PrivateLayout } from "./layouts/PrivateLayout";
-import { Home } from "./pages/Home";
-import { Login } from "./pages/Login";
-import { Register } from "./pages/Register";
+import { PendingComponent } from "./components/PendingComponent";
+import { NotFound } from "./pages/NotFound";
+import { routeTree } from "./routeTree.gen";
 
-export const router = createBrowserRouter([
-  {
-    element: <PrivateLayout />,
-    children: [
-      {
-        path: ROUTES.HOME,
-        element: <Home />,
-      },
-    ],
-  },
-  {
-    path: ROUTES.REGISTER,
-    element: <Register />,
-  },
-  {
-    path: ROUTES.LOGIN,
-    element: <Login />,
-  },
-]);
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+
+  interface StaticDataRouteOption {
+    title?: string;
+    Icon?: LucideIcon;
+  }
+}
+
+export const router = createRouter({
+  routeTree,
+  defaultNotFoundComponent: NotFound,
+  defaultPendingMs: 0,
+  defaultPendingComponent: PendingComponent,
+});

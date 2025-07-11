@@ -28,5 +28,5 @@
       "pages/*": ["src/pages/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "src/routes/about.ts"]
 }

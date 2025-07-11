@@ -1,33 +1,61 @@
 import {
   MutationFunction,
   QueryClient,
-  QueryFunction,
   useMutation,
   useQuery,
 } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 
-import { MutationOptions, QueryOptions } from "./types";
+import {
+  BaseResponse,
+  CreateQueryHookArgs,
+  MutationOptions,
+  QueryOptions,
+} from "./types";
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: (failureCount, error: unknown) => {
+        const axiosError = error as AxiosError;
+        const status = axiosError.response?.status;
+
+        if (status && [401, 401].includes(status)) {
+          return false;
+        }
+
+        return failureCount < 2;
+      },
+    },
+  },
+});
 
 export const createMutationHook = <
   Variables = void,
   ResData = unknown,
   ErrorData = unknown,
 >(
-  mutationFn: MutationFunction<AxiosResponse<ResData>, Variables>,
+  mutationFn: MutationFunction<BaseResponse<ResData>, Variables>,
   defaultOptions?: MutationOptions<Variables, ResData, ErrorData>,
 ) => {
   return (options?: MutationOptions<Variables, ResData, ErrorData>) =>
     useMutation({ mutationFn, ...defaultOptions, ...options });
 };
 
-export const createQueryHook = <ResData = unknown, ErrorData = unknown>(
-  queryFn: QueryFunction<AxiosResponse<ResData>>,
-  queryKey: string[],
-  defaultOptions?: QueryOptions<ResData, ErrorData>,
-) => {
-  return (options?: QueryOptions<ResData, ErrorData>) =>
-    useQuery({ queryFn, queryKey, ...defaultOptions, ...options });
+export const createQueryHook = <
+  QueryFnData,
+  TData = BaseResponse<QueryFnData>,
+  ErrorData = unknown,
+>({
+  queryFn,
+  queryKey,
+  defaultOptions,
+}: CreateQueryHookArgs<QueryFnData, TData, ErrorData>) => {
+  return (options?: QueryOptions<QueryFnData, TData, ErrorData>) =>
+    useQuery<BaseResponse<QueryFnData>, AxiosError<ErrorData>, TData>({
+      queryFn,
+      queryKey,
+      ...defaultOptions,
+      ...options,
+    });
 };

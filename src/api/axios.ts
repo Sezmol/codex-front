@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { ROUTES, ROUTES_WITHOUT_AUTH } from "@/constants/routerPaths";
+import { ROUTES_WITHOUT_AUTH } from "@/constants/routerPaths";
 
 import { ENDPOINTS } from "./endpoints";
 
@@ -21,16 +21,13 @@ apiClient.interceptors.response.use(
     if (
       error.response.status === 401 &&
       !originalRequest._isRetry &&
-      !ROUTES_WITHOUT_AUTH.includes(window.location.pathname)
+      !ROUTES_WITHOUT_AUTH.includes(
+        window.location.pathname as (typeof ROUTES_WITHOUT_AUTH)[number],
+      )
     ) {
       originalRequest._isRetry = true;
 
-      if (error.config.url === ENDPOINTS.LOGIN) {
-        return Promise.reject(error);
-      }
-
-      if (error.config.url === ENDPOINTS.REFRESH) {
-        window.location.replace(ROUTES.LOGIN);
+      if ([ENDPOINTS.LOGIN, ENDPOINTS.REFRESH].includes(error.config.url)) {
         return Promise.reject(error);
       }
 
