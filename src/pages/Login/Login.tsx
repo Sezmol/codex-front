@@ -1,16 +1,16 @@
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
-import { queryClient } from "@/api";
-import { useLogin } from "@/api/auth/authHooks";
-import { CURRENT_USER_QUERY_KEY } from "@/api/queryKeys";
-import { AuthContainer } from "@/components/AuthContainer";
-import { ROUTES } from "@/constants/routerPaths";
-import { useFormCreation } from "@/hooks/useFormCreation";
-import { Route } from "@/routes/login";
-import { Button } from "@/ui/button";
-import { Input } from "@/ui/input";
-import { LoginSchema, loginSchema } from "@/validations/schemas/loginSchema";
+import { queryClient } from "@/shared/api";
+import { useLogin } from "@/shared/api/auth/authHooks";
+import { CURRENT_USER_QUERY_KEY } from "@/shared/api/queryKeys";
+import { AuthContainer } from "@/widgets/AuthContainer";
+import { ROUTES } from "@/shared/constants/routerPaths";
+import { useFormCreation } from "@/shared/hooks/useFormCreation";
+import { Route } from "@/app/routes/login";
+import { Button } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
+import { LoginSchema, loginSchema } from "@/shared/validations/schemas/loginSchema";
 
 const DEFAULT_VALUES: LoginSchema = {
   nickname: "",

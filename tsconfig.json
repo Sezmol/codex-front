@@ -8,7 +8,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "components/*": ["src/components/*"],
+      "app/*": ["src/app/*"],
+      "shared/*": ["src/shared/*"],
+      "widgets/*": ["src/widgets/*"],
       "pages/*": ["src/pages/*"]
     }
   }

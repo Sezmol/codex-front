@@ -19,15 +19,21 @@ export default defineConfig(({ mode }) => {
       },
     },
     plugins: [
-      TanStackRouterVite({ target: "react", autoCodeSplitting: true }),
+      TanStackRouterVite({
+        target: "react",
+        autoCodeSplitting: true,
+        routesDirectory: "./src/app/routes",
+      }),
       tailwindcss(),
       react(),
     ],
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src/"),
-        components: `${path.resolve(__dirname, "./src/components/")}`,
-        pages: `${path.resolve(__dirname, "./src/pages/")}`,
+        app: path.resolve(__dirname, "./src/app/"),
+        shared: path.resolve(__dirname, "./src/shared/"),
+        widgets: path.resolve(__dirname, "./src/widgets/"),
+        pages: path.resolve(__dirname, "./src/pages/"),
       },
     },
   };

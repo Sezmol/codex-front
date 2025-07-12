@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-import { ROUTES } from "@/constants/routerPaths";
+import { ROUTES } from "@/shared/constants/routerPaths";
 
 export const NotFound = () => {
   return (

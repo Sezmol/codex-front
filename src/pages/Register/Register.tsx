@@ -1,21 +1,21 @@
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
-import { queryClient } from "@/api";
-import { useRegister } from "@/api/auth/authHooks";
-import { CURRENT_USER_QUERY_KEY } from "@/api/queryKeys";
-import { AuthContainer } from "@/components/AuthContainer";
-import { ROLES_OPTIONS } from "@/constants";
-import { ROUTES } from "@/constants/routerPaths";
-import { useFormCreation } from "@/hooks/useFormCreation";
-import { Role } from "@/types/enums";
-import { BaseSelect } from "@/ui/BaseSelect";
-import { Button } from "@/ui/button";
-import { Input } from "@/ui/input";
+import { queryClient } from "@/shared/api";
+import { useRegister } from "@/shared/api/auth/authHooks";
+import { CURRENT_USER_QUERY_KEY } from "@/shared/api/queryKeys";
+import { AuthContainer } from "@/widgets/AuthContainer";
+import { ROLES_OPTIONS } from "@/shared/constants";
+import { ROUTES } from "@/shared/constants/routerPaths";
+import { useFormCreation } from "@/shared/hooks/useFormCreation";
+import { Role } from "@/shared/types/enums";
+import { BaseSelect } from "@/shared/ui/BaseSelect";
+import { Button } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
 import {
   RegistrationSchema,
   registrationSchema,
-} from "@/validations/schemas/registrationSchema";
+} from "@/shared/validations/schemas/registrationSchema";
 
 const DEFAULT_VALUES: RegistrationSchema = {
   firstName: "",

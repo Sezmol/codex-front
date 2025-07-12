@@ -1,8 +1,8 @@
-import { useGetPosts } from "@/api/posts/postsHooks";
-import { PostsContainer } from "@/components/PostsContainer";
-import { PostsFilters } from "@/components/PostsFilters";
-import { Route } from "@/routes";
-import { Typography } from "@/ui/Typography";
+import { useGetPosts } from "@/shared/api/posts/postsHooks";
+import { PostsContainer } from "@/widgets/PostsContainer";
+import { PostsFilters } from "@/widgets/PostsFilters";
+import { Route } from "@/app/routes";
+import { Typography } from "@/shared/ui/Typography";
 
 export const Home = () => {
   const filters = Route.useSearch();

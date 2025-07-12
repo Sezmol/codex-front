@@ -4,14 +4,14 @@ import { getRouteApi, useLoaderData } from "@tanstack/react-router";
 import { MapPin, PlusIcon } from "lucide-react";
 import { toast } from "sonner";
 
-import { useCreatePortfolioItem, useGetUser } from "@/api/users/usersHooks";
-import { ProfileEditForm } from "@/components/ProfileEditForm";
-import { ProjectCard } from "@/components/ProjectCard";
-import { ProjectForm } from "@/components/ProjectForm";
-import { UserAvatar } from "@/components/UserAvatar";
-import { ROLES_TEXT } from "@/constants";
-import { Badge } from "@/ui/badge";
-import { Button } from "@/ui/button";
+import { useCreatePortfolioItem, useGetUser } from "@/shared/api/users/usersHooks";
+import { ProfileEditForm } from "@/widgets/ProfileEditForm";
+import { ProjectCard } from "@/widgets/ProjectCard";
+import { ProjectForm } from "@/widgets/ProjectForm";
+import { UserAvatar } from "@/widgets/UserAvatar";
+import { ROLES_TEXT } from "@/shared/constants";
+import { Badge } from "@/shared/ui/badge";
+import { Button } from "@/shared/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -20,9 +20,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/ui/dialog";
-import { Typography } from "@/ui/Typography";
-import { CreatePortfolioItemSchema } from "@/validations/schemas/createPortfolioItemSchema";
+} from "@/shared/ui/dialog";
+import { Typography } from "@/shared/ui/Typography";
+import { CreatePortfolioItemSchema } from "@/shared/validations/schemas/createPortfolioItemSchema";
 
 import { ProfileSkeleton } from "./ProfileSkeleton";
 
